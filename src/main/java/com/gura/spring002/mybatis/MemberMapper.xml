@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+   <!-- 
+      <mapper>
+       namespace="<mapper> 의 경로".
+      
+      <select> => spl 에서 select 할거면 사용하는 테그.
+      id="sql 문의 아이디 부여" -> dao 를 implements 한 class의 override한 메소드의 인자 확인.
+      resultType="select 된 row 하나를 어떤 객체에 담을지 type 선언"
+    -->
+<select id="getList" resultType="com.gura.spring002.member.dto.MemberDto">
+   select num,name,addr
+   from member
+   order by num asc
+</select>
+    <!-- 
+       parameterType="인자로 던달된 data의 type"
+       parameterType 이 dto인 경우에
+       #{name} 은 dto.getName() 메소드를 호춣해서 리턴되는 값을 자동 바인딩해 준다.
+       #{addr} 은 dto.getAddr() 메소드를 호춣해서 리턴되는 값을 자동 바인딩해 준다.
+     -->
+<insert id="insert" parameterType="memberDto">
+   insert into member
+   (num,name,addr)
+   values(member_seq.NEXTVAL, #{name},#{addr})
+</insert>
+<delete id="delete" parameterType="int">
+   delete from member
+   where num=#{num }
+</delete>
+
+<select id="getData" parameterType="int" resultType="memberDto">
+		SELECT num,name,addr
+		FROM member
+		WHERE num=#{num}
+	</select>
+   
+   <update id="update" parameterType="memberDto">
+      UPDATE member
+      SET name=#{name}, addr=#{addr}
+      WHERE num=#{num}
+   </update>
+</mapper>
